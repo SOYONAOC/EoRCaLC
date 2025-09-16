@@ -1,0 +1,42 @@
+Metadata-Version: 2.4
+Name: iondiff
+Version: 0.0.0
+Summary: Ionization diffusion calculations and power spectrum analysis
+Author-email: Hajime Hinata <onmyojiflow@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/SOYONAOC/IonDiff
+Project-URL: Repository, https://github.com/SOYONAOC/IonDiff
+Project-URL: Bug Reports, https://github.com/SOYONAOC/IonDiff/issues
+Project-URL: Documentation, https://github.com/SOYONAOC/IonDiff#readme
+Keywords: astrophysics,cosmology,ionization,power spectrum,diffusion
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.18.0
+Requires-Dist: scipy>=1.5.0
+Requires-Dist: astropy>=4.0
+Requires-Dist: filelock>=3.0.0
+Requires-Dist: camb
+Requires-Dist: massfunc
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-cov>=2.0; extra == "test"
+Dynamic: license-file
