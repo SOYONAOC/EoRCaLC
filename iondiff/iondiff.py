@@ -12,7 +12,7 @@ from astropy.constants import m_p
 
 class Ion:
 
-    def __init__(self,z,fesc=0.2,kakaka=1.4*1e-28,xi_ion=10**25.6,A2byA1=0.1,ktrans=200,alpha=2.0,beta=0.0):
+    def __init__(self,z,fesc=0.2,kakaka=0.7*1e-28,xi_ion=10**25.6,A2byA1=0.1,ktrans=200,alpha=2.0,beta=0.0):
         self.cosmo = MassFunctions(A2byA1=A2byA1,kMpc_trans=ktrans,alpha=alpha,beta=beta)
         self.A2byA1 = A2byA1
         self.kMpc_trans = ktrans
@@ -28,14 +28,12 @@ class Ion:
 
 
     ### Source term
-    def fstar(self, M):
-        f0 = .14
-        ylo = .46
-        yhi = .82
-        Mp = 10**12.3  # M_sun solmass
-        fup = 2 * f0
-        fdown = ((M / Mp)**-ylo + (M / Mp)**yhi)
-        return fup / fdown
+    def fstar(self, Mh):
+        eps0 = 0.16
+        Mc = 10**11.7
+        beta = 0.9
+        gamma = 0.65
+        return 2*eps0 * ((Mh / Mc)**-beta + (Mh / Mc)**gamma)**-1
 
     def fduty(self, M):
         al = 1.5

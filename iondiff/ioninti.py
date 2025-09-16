@@ -29,15 +29,10 @@ class Ion:
 
 
     ### Source term
-    
+
+
 
     ### IGM term
-    def trec(self,deltaV):
-        alpha_B = 2.59e-13  # cm^3/s at 10^4 K
-        clumping_factor = 3.0
-        Xe = 1.09
-        return 1.0 / (clumping_factor * alpha_B * (1 + deltaV) * Xe*n_H(deltaV).to(1/u.cm**3).value * (1 + self.z)**3)  # s
-
     def n_HI(self,deltaV):
         return n_H(deltaV).to(u.Mpc**-3).value  ### coming number density of hydrogen atoms in cm^-3
     
@@ -53,10 +48,10 @@ class Ion:
         CIGM = 3.0
         nh = self.n_HI(deltaV)*(u.Mpc**-3).to(u.cm**-3)
         Q_HII = xHII_Field
-        # alpha_A = 4.2e-13 #cm**3/s
-        alpha_B = 2.59e-13  # cm^3/s at 10^4 K
+        alpha_A = 4.2e-13 #cm**3/s
+        # alpha_B = 2.59e-13  # cm^3/s at 10^4 K
         differential_trans = self.dtdz(self.z)
-        return -CIGM*x_HE*alpha_B*nh*Q_HII*(1+self.z)**3 * differential_trans
+        return -CIGM*x_HE*alpha_A*nh*Q_HII*(1+self.z)**3 * differential_trans
     
     ### Minihalo term
     def dndmeps(self,M,Mr,deltaV,z):
