@@ -58,43 +58,29 @@ class Ion:
         return self._nxi_trapez(diff, Mv, deltaV)
     
     ### Minihaolo ST_over_PS
-    def Nxi_ST(self,z):
-        m_H = (m_p.to(u.M_sun)).value #M_sun
-        Min = self.cosmo.M_Jeans(z)
-        Max = self.cosmo.M_vir(0.61,1e4,z)
-        def Nxi_ST_diff(m):
-            return (self.xim(m,z)*1 / m_H * self.cosmo.omegab / self.cosmo.omegam * m * self.cosmo.dndmst(m, z))
-        mslice = np.logspace(np.log10(Min), np.log10(Max), 100)
-        ans = 0
-        for i in range(len(mslice)-1):
-            ans += quad(Nxi_ST_diff, mslice[i], mslice[i+1], epsrel=1e-5)[0]
-        return ans
+    def nxi_st_ini(self,z):
+        def diff(m):
+            return (self.xim(m,z)*1 / self.mH * self.ob0 / self.om0 * m * self.cosmo.dndmst(m, z))
+        x = np.linspace(np.log10(self.M_J), np.log10(self.M_min), 1000)
+        y = diff(10**x)*10**x *np.log(10)
+        return np.trapezoid(y,x)
     
-    def dST_dz(self,m,z):
+    def st_dz(self,m,z):
         return (self.cosmo.dndmst(m,z+0.001*z) - self.cosmo.dndmst(m,z-0.001*z)) / (0.002*z)
 
-    def dNxi_dz_ST(self,m,z):
-        m_H = (m_p.to(u.M_sun)).value #M_sun
-        omega_b = self.cosmo.omegab
-        omega_m = self.cosmo.omegam
-        return self.Xim(m,z)*m*self.dST_dz(m,z)/ m_H * omega_b / omega_m
+    def nxi_dz_st(self, z: np.ndarray):
+        x = np.linspace(np.log10(self.M_J), np.log10(self.M_min), 1000)
+        m = (10**x)[:, None]   # (1000, 1)
+        z = z[None, :]          # (1, N)
+        diff_val = self.xim(m, z) * m * self.st_dz(m, z) / self.mH * self.ob0 / self.om0
+        y = diff_val * m * np.log(10)  # (1000, N)
+        y = np.minimum(y, 0)
+        return np.trapezoid(y, x, axis=0)  # 沿质量轴积分 → (N,)
 
-    def dNxi_ST_Simpson(self,z):
-        Min = self.cosmo.M_Jeans(z)
-        Max = self.cosmo.M_vir(0.61,1e4,z)
-        ms = np.linspace(np.log10(Min), np.log10(Max), 1000)
-        dNxist = self.dNxi_dz_ST(10**ms,z)
-        dNxist[dNxist > 0] = 0
-        integrand = dNxist * 10**ms * np.log(10)
-        arr = simpson(integrand, ms, axis=0)
-        return arr
-
-    def Nxi_ST_AtZ(self,z):
-        dz = -0.1
-        zlin = np.arange(20, z + dz/2, dz)
-        dNxi_ST = self.dNxi_ST_Simpson(zlin)
-        Nxi_st = abs(np.trapezoid(dNxi_ST, zlin)) + self.Nxi_ST(20)
-        return Nxi_st
+    def nxi_st(self,z):
+        zlin = np.arange(20.1, z-0.05, -0.1)
+        step = self.nxi_dz_st(zlin)
+        return abs(np.trapezoid(step, zlin)) + self.nxi_st_ini(20.1)
 
 
     ### IGM term
@@ -140,6 +126,7 @@ class Ion:
         deltaV_grid, m_grid = np.meshgrid(self.deltaV_interp, x, indexing='ij')
         m_vals = 10**m_grid
         y = diff_func(m_vals, Mv, deltaV_grid) * m_vals * np.log(10)
+        y = np.minimum(y,0)
         integrand = np.trapezoid(y, x, axis=1)
         interp_func = interp1d(self.deltaV_interp, integrand, kind='cubic', bounds_error=False, fill_value=0)
         return interp_func(deltaV)
