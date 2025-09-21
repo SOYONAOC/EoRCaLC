@@ -3,6 +3,7 @@ pyproject.toml
 ./iondiff/__init__.py
 ./iondiff/from_power.py
 ./iondiff/iondiff.py
+./iondiff/ioninti.py
 ./iondiff/special.py
 iondiff.egg-info/PKG-INFO
 iondiff.egg-info/SOURCES.txt

@@ -46,3 +46,13 @@ def Nxi_dz_ST(z):
 def Nxi_ST_Interp():
     zstep = np.linspace(4,30,1000)
     return 
+
+def qion_sb99(Muv):
+    if Muv > 20:
+        return 1000
+    elif Muv >= 16.5:
+        return 4065000 * np.exp(-0.420 * Muv)
+    elif Muv >= 13:
+        return -32336 * np.log10(Muv) + 43720
+    else:
+        return 7700

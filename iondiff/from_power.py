@@ -279,7 +279,7 @@ class MassFunctions(CosmologyParams):
     def dndmps(self, m, z):
         sigm = np.sqrt(self.sigma2_interp(m))
         dsig_dm = abs(self.dsigma2_dm_interp(m)) / (2.0 * sigm)
-        return np.sqrt(2.0 / np.pi) * self.rhom / m * self.deltac(z) / sigm * dsig_dm * np.exp(-self.deltac(z) ** 2 / (2 * sigm ** 2))
+        return np.sqrt(2.0 / np.pi) * self.rhom / m * self.deltac(z) / sigm**2 * dsig_dm * np.exp(-self.deltac(z) ** 2 / (2 * sigm ** 2))
 
     def dndmst(self,M,z):
         Ast=0.353
