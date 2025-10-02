@@ -1,4 +1,4 @@
-from .from_power import MassFunctions
+from .powerspec import MassFunctions
 import numpy as np
 from scipy.integrate import simpson
 from scipy.interpolate import interp1d

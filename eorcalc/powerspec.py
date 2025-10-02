@@ -292,6 +292,16 @@ class MassFunctions(CosmologyParams):
         dsigmadm=self.dsigma2_dm_interp(M)/(2*sigma)
         return -self.rhom/M*(dsigmadm/sigma)*(2*Ast)*(1+1.0/(nup)**(2*Pst))*(nup**2/(2*np.pi))**(1./2.)*np.exp(-nup**2/2)
 
+    def fcoll_st(self, z,Mmin, Mmax=1e16,n=2000):
+        logm_max = np.log10(Mmax)
+        logm_min = np.log10(Mmin)
+        def diff(m,z):
+            return self.dndmst(m,z)*m
+        x = np.linspace(logm_min, logm_max, n)
+        y = diff(10**x, z)*10**x*np.log(10)
+        integral = np.trapezoid(y, x)        
+        return integral / self.rhom
+
     def delta_L(self, deltar,z):
         return (1.68647 - 1.35 / (1 + deltar) ** (2 / 3) - 1.12431 / (1 + deltar) ** (1 / 2) + 0.78785 / (1 + deltar) ** (0.58661)) / self.cosmo.Dz(z)
 
