@@ -3,7 +3,7 @@ import numpy as np
 import cupy as cp
 import astropy.units as u
 from cosfunc import n_H,dtdz
-from .special import qion_sb99,interp1d_gpu,xim,fstar
+from .special import interp1d_gpu,xim,fstar
 
 class Ion:
 
@@ -20,7 +20,7 @@ class Ion:
         self.M_min = self.cosmo.M_vir(0.61, 1e4, z)  # M_sun
         self.M_max = self.cosmo.M_vir(0.61, 2e8, z)
         self.M_J = self.cosmo.M_Jeans(z)  # M_sun
-        self.qion = qion_sb99(z)  # ionizing photon per baryon in stars
+        self.qion = 7700  # ionizing photon per baryon in stars
 
     ### Source term
     def nion_interp(self,Mv:float,deltav:cp.ndarray)->cp.ndarray:

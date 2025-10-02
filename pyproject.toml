@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eorcalc"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     {name = "Hajime Hinata", email = "onmyojiflow@gmail.com"},
 ]
-description = "EoR ionization diffusion calculations and power spectrum analysis with GPU acceleration"
+description = "GPU-accelerated reionization field calculator with power spectrum analysis for the Epoch of Reionization"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -28,10 +28,13 @@ classifiers = [
 dependencies = [
     "numpy>=1.20.0",
     "scipy>=1.6.0",
+    "pandas>=1.3.0",
     "astropy>=4.0",
     "filelock>=3.0.0",
     "camb>=1.3.0",
     "massfunc>=0.0.10",
+    "cosfunc>=0.1.0",
+    "xxiop>=0.1.0",
     "cupy-cuda12x>=12.0.0",
 ]
 keywords = [
@@ -43,14 +46,16 @@ keywords = [
     "reionization",
     "EoR",
     "GPU",
+    "ionization field",
+    "optical depth",
 ]
 license = {text = "MIT"}
 
 [project.urls]
-Homepage = "https://github.com/SOYONAOC/IonDiff"
-Repository = "https://github.com/SOYONAOC/IonDiff"
-"Bug Reports" = "https://github.com/SOYONAOC/IonDiff/issues"
-Documentation = "https://github.com/SOYONAOC/IonDiff#readme"
+Homepage = "https://github.com/SOYONAOC/EoRCaLC"
+Repository = "https://github.com/SOYONAOC/EoRCaLC"
+"Bug Reports" = "https://github.com/SOYONAOC/EoRCaLC/issues"
+Documentation = "https://github.com/SOYONAOC/EoRCaLC#readme"
 
 [project.optional-dependencies]
 dev = [
@@ -134,5 +139,7 @@ module = [
     "filelock.*",
     "cupy.*",
     "cosfunc.*",
+    "xxiop.*",
+    "pandas.*",
 ]
 ignore_missing_imports = true
