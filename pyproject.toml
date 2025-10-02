@@ -3,20 +3,20 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "iondiff"
-version = "0.0.0"
+name = "eorcalc"
+version = "0.1.0"
 authors = [
     {name = "Hajime Hinata", email = "onmyojiflow@gmail.com"},
 ]
-description = "Ionization diffusion calculations and power spectrum analysis"
+description = "EoR ionization diffusion calculations and power spectrum analysis with GPU acceleration"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -26,14 +26,24 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
 ]
 dependencies = [
-    "numpy>=1.18.0",
-    "scipy>=1.5.0",
+    "numpy>=1.20.0",
+    "scipy>=1.6.0",
     "astropy>=4.0",
     "filelock>=3.0.0",
-    "camb",
-    "massfunc",
+    "camb>=1.3.0",
+    "massfunc>=0.0.10",
+    "cupy-cuda12x>=12.0.0",
 ]
-keywords = ["astrophysics", "cosmology", "ionization", "power spectrum", "diffusion"]
+keywords = [
+    "astrophysics",
+    "cosmology", 
+    "ionization",
+    "power spectrum",
+    "diffusion",
+    "reionization",
+    "EoR",
+    "GPU",
+]
 license = {text = "MIT"}
 
 [project.urls]
@@ -44,26 +54,31 @@ Documentation = "https://github.com/SOYONAOC/IonDiff#readme"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=6.0",
-    "pytest-cov>=2.0",
-    "black>=21.0",
-    "flake8>=3.8",
-    "mypy>=0.800",
+    "pytest>=7.0",
+    "pytest-cov>=3.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "mypy>=0.950",
+    "ipython>=8.0",
+    "jupyter>=1.0",
 ]
 test = [
-    "pytest>=6.0",
-    "pytest-cov>=2.0",
+    "pytest>=7.0",
+    "pytest-cov>=3.0",
+]
+gpu-cuda11 = [
+    "cupy-cuda11x>=11.0.0",
 ]
 
 [tool.setuptools]
-packages = ["iondiff"]
+packages = ["eorcalc"]
 
 [tool.setuptools.package-dir]
-"" = "."
+eorcalc = "eorcalc"
 
 [tool.black]
 line-length = 88
-target-version = ['py37', 'py38', 'py39', 'py310', 'py311', 'py312']
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -78,6 +93,7 @@ extend-exclude = '''
   | buck-out
   | build
   | dist
+  | __pycache__
 )/
 '''
 
@@ -89,20 +105,20 @@ python_functions = ["test_*"]
 addopts = [
     "--strict-markers",
     "--strict-config",
-    "--cov=iondiff",
+    "--cov=eorcalc",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
 ]
 
 [tool.mypy]
-python_version = "3.7"
+python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
 check_untyped_defs = true
-disallow_untyped_decorators = true
+disallow_untyped_decorators = false
 no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
@@ -116,5 +132,7 @@ module = [
     "scipy.*",
     "astropy.*",
     "filelock.*",
+    "cupy.*",
+    "cosfunc.*",
 ]
 ignore_missing_imports = true
